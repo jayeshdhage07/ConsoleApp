@@ -8,45 +8,41 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
+            Console.WriteLine(Messages.GetMessage(Messages.MessageType.Welcome));
+
             // Creating instances of accounts
             BankAccount savings = new SavingsAccount("Alice", 1000);
             BankAccount current = new CurrentAccount("Bob", 5000);
 
             while (true)
             {
-                Console.WriteLine("\n--- Banking System Menu ---");
-                Console.WriteLine("1. Deposit to Savings Account");
-                Console.WriteLine("2. Withdraw from Savings Account");
-                Console.WriteLine("3. Deposit to Current Account");
-                Console.WriteLine("4. Withdraw from Current Account");
-                Console.WriteLine("5. Display Savings Account Balance");
-                Console.WriteLine("6. Display Current Account Balance");
-                Console.WriteLine("7. Exit");
-                Console.Write("Choose an option: ");
+                DisplayMenu();
+
+                Console.WriteLine(Messages.GetMessage(Messages.MessageType.MenuPrompt));
                 string choice = Console.ReadLine();
 
                 switch (choice)
                 {
                     case "1":
-                        Console.Write("Enter amount to deposit into savings account: ");
+                        Console.WriteLine(Messages.GetMessage(Messages.MessageType.DepositPrompt));
                         decimal savingsDeposit = GetValidAmount();
                         savings.Deposit(savingsDeposit);
                         break;
 
                     case "2":
-                        Console.Write("Enter amount to withdraw from savings account: ");
+                        Console.WriteLine(Messages.GetMessage(Messages.MessageType.WithdrawPrompt));
                         decimal savingsWithdraw = GetValidAmount();
                         savings.Withdraw(savingsWithdraw);
                         break;
 
                     case "3":
-                        Console.Write("Enter amount to deposit into current account: ");
+                        Console.WriteLine(Messages.GetMessage(Messages.MessageType.DepositPrompt));
                         decimal currentDeposit = GetValidAmount();
                         current.Deposit(currentDeposit);
                         break;
 
                     case "4":
-                        Console.Write("Enter amount to withdraw from current account: ");
+                        Console.WriteLine(Messages.GetMessage(Messages.MessageType.WithdrawPrompt));
                         decimal currentWithdraw = GetValidAmount();
                         current.Withdraw(currentWithdraw);
                         break;
@@ -60,14 +56,27 @@ namespace ConsoleApp
                         break;
 
                     case "7":
-                        Console.WriteLine("Exiting the system. Goodbye!");
+                        Console.WriteLine(Messages.GetMessage(Messages.MessageType.ExitMessage));
                         return;
 
                     default:
-                        Console.WriteLine("Invalid option. Please try again.");
+                        Console.WriteLine(Messages.GetMessage(Messages.MessageType.InvalidOption));
                         break;
                 }
             }
+        }
+
+        // Method to display the menu options
+        static void DisplayMenu()
+        {
+            Console.WriteLine("\n--- Banking System Menu ---");
+            Console.WriteLine("1. Deposit to Savings Account");
+            Console.WriteLine("2. Withdraw from Savings Account");
+            Console.WriteLine("3. Deposit to Current Account");
+            Console.WriteLine("4. Withdraw from Current Account");
+            Console.WriteLine("5. Display Savings Account Balance");
+            Console.WriteLine("6. Display Current Account Balance");
+            Console.WriteLine("7. Exit");
         }
 
         // Method to validate and convert user input to a decimal amount
@@ -76,6 +85,7 @@ namespace ConsoleApp
             decimal amount;
             while (true)
             {
+                Console.WriteLine(Messages.GetMessage(Messages.MessageType.EnterAmount));
                 string input = Console.ReadLine();
                 if (decimal.TryParse(input, out amount) && amount > 0)
                 {
@@ -83,7 +93,7 @@ namespace ConsoleApp
                 }
                 else
                 {
-                    Console.Write("Invalid input. Please enter a positive number: ");
+                    Console.WriteLine(Messages.GetMessage(Messages.MessageType.InvalidInput));
                 }
             }
         }

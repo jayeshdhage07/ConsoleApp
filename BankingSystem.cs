@@ -24,7 +24,7 @@ namespace BankingSystem
         // Non-abstract method to display the balance, common to all types of accounts
         public void DisplayBalance()
         {
-            Console.WriteLine($"{AccountHolder}'s Account Balance: {Balance:C}");
+            Console.WriteLine($"{Messages.GetMessage(Messages.MessageType.DisplayBalance)} {AccountHolder}'s Account Balance: {Balance:C}");
         }
     }
 
@@ -42,11 +42,11 @@ namespace BankingSystem
             if (amount > 0)
             {
                 Balance += amount;
-                Console.WriteLine($"Deposited {amount:C} to {AccountHolder}'s savings account.");
+                Console.WriteLine($"{Messages.GetMessage(Messages.MessageType.DepositSuccess)} {amount:C} to {AccountHolder}'s savings account.");
             }
             else
             {
-                Console.WriteLine("Deposit amount must be positive.");
+                Console.WriteLine(Messages.GetMessage(Messages.MessageType.InvalidInput));
             }
         }
 
@@ -55,16 +55,16 @@ namespace BankingSystem
         {
             if (amount > Balance)
             {
-                Console.WriteLine("Insufficient funds.");
+                Console.WriteLine(Messages.GetMessage(Messages.MessageType.InsufficientFunds));
             }
             else if (amount > WithdrawalLimit)
             {
-                Console.WriteLine($"Cannot withdraw more than {WithdrawalLimit:C} at once.");
+                Console.WriteLine($"{Messages.GetMessage(Messages.MessageType.WithdrawalLimitExceeded)} {WithdrawalLimit:C} at once.");
             }
             else
             {
                 Balance -= amount;
-                Console.WriteLine($"Withdrew {amount:C} from {AccountHolder}'s savings account.");
+                Console.WriteLine($"{Messages.GetMessage(Messages.MessageType.WithdrawSuccess)} {amount:C} from {AccountHolder}'s savings account.");
             }
         }
     }
@@ -81,11 +81,11 @@ namespace BankingSystem
             if (amount > 0)
             {
                 Balance += amount;
-                Console.WriteLine($"Deposited {amount:C} to {AccountHolder}'s current account.");
+                Console.WriteLine($"{Messages.GetMessage(Messages.MessageType.DepositSuccess)} {amount:C} to {AccountHolder}'s current account.");
             }
             else
             {
-                Console.WriteLine("Deposit amount must be positive.");
+                Console.WriteLine(Messages.GetMessage(Messages.MessageType.InvalidInput));
             }
         }
 
@@ -94,12 +94,12 @@ namespace BankingSystem
         {
             if (amount > Balance)
             {
-                Console.WriteLine("Insufficient funds.");
+                Console.WriteLine(Messages.GetMessage(Messages.MessageType.InsufficientFunds));
             }
             else
             {
                 Balance -= amount;
-                Console.WriteLine($"Withdrew {amount:C} from {AccountHolder}'s current account.");
+                Console.WriteLine($"{Messages.GetMessage(Messages.MessageType.WithdrawSuccess)} {amount:C} from {AccountHolder}'s current account.");
             }
         }
     }
