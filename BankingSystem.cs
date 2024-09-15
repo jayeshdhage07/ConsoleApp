@@ -1,69 +1,105 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp
+namespace BankingSystem
 {
-    internal class BankingSystem
+    // Abstract class defining common structure for a bank account
+    abstract class BankAccount
     {
-        public string? bankAccName;
-        public int? accNumber;
-        public int? balance;
+        public string AccountHolder { get; set; }
+        public decimal Balance { get; protected set; }
 
-        public void BankAccount()
+        // Constructor for initializing account details
+        public BankAccount(string accountHolder, decimal initialBalance)
         {
-            balance = 250000;
+            AccountHolder = accountHolder;
+            Balance = initialBalance;
         }
 
-        public void getAccDetails()
-        {
-            Console.WriteLine("Enter bank Bank name");
-            string? userInput1 = Console.ReadLine();
-            bankAccName = userInput1;
+        // Abstract method for depositing money, must be implemented by derived classes
+        public abstract void Deposit(decimal amount);
 
-            Console.WriteLine("Enter bank account number");
-            string? userInput2 = Console.ReadLine();
-            accNumber = Convert.ToInt32(userInput2);
-            Console.WriteLine($"Enter account has been created details are \n {bankAccName}, \n {accNumber} ");
-            Console.WriteLine("--------------------------------------------");
+        // Abstract method for withdrawing money, must be implemented by derived classes
+        public abstract void Withdraw(decimal amount);
+
+        // Non-abstract method to display the balance, common to all types of accounts
+        public void DisplayBalance()
+        {
+            Console.WriteLine($"{AccountHolder}'s Account Balance: {Balance:C}");
         }
+    }
 
-        public void checkAccount()
+    // SavingsAccount inherits from BankAccount and provides specific implementation for deposit and withdraw
+    class SavingsAccount : BankAccount
+    {
+        private const decimal WithdrawalLimit = 500; // Example limit for withdrawals
+
+        public SavingsAccount(string accountHolder, decimal initialBalance)
+            : base(accountHolder, initialBalance) { }
+
+        // Implementation of deposit
+        public override void Deposit(decimal amount)
         {
-            if(accNumber != null && bankAccName != null)
+            if (amount > 0)
             {
-                Console.WriteLine($"Your bank account name is: {bankAccName} and bank account no is {accNumber}");
-                Console.WriteLine("--------------------------------------------");
-            }
-        }
-
-        public void deposit()
-        {
-            Console.WriteLine("Enter Enter account details where you want to deposit");
-            getAccDetails();
-            Console.WriteLine("Enter amount you want to deposit");
-            string? userInput3 = Console.ReadLine();
-            balance = Convert.ToInt32(userInput3);
-            Console.WriteLine("--------------------------------------------");
-        }
-
-        public void withdraw()
-        {
-            Console.WriteLine("Enter Enter account details where you want to withdraw");
-            checkAccount();
-            Console.WriteLine("Enter amount you want to withdraw");
-            string? userInput4 = Console.ReadLine();
-
-            if(Convert.ToInt32(userInput4) < 0 && Convert.ToInt32(userInput4) <= balance)
-            {
-                Console.WriteLine("you don't have sufficient balance");
+                Balance += amount;
+                Console.WriteLine($"Deposited {amount:C} to {AccountHolder}'s savings account.");
             }
             else
             {
-                balance = balance - Convert.ToInt32(userInput4);
-                Console.WriteLine($"You withdraw {Convert.ToInt32(userInput4)}, remaining balance is {balance}");
+                Console.WriteLine("Deposit amount must be positive.");
+            }
+        }
+
+        // Implementation of withdraw with a limit check
+        public override void Withdraw(decimal amount)
+        {
+            if (amount > Balance)
+            {
+                Console.WriteLine("Insufficient funds.");
+            }
+            else if (amount > WithdrawalLimit)
+            {
+                Console.WriteLine($"Cannot withdraw more than {WithdrawalLimit:C} at once.");
+            }
+            else
+            {
+                Balance -= amount;
+                Console.WriteLine($"Withdrew {amount:C} from {AccountHolder}'s savings account.");
+            }
+        }
+    }
+
+    // CurrentAccount inherits from BankAccount and has no withdrawal limit
+    class CurrentAccount : BankAccount
+    {
+        public CurrentAccount(string accountHolder, decimal initialBalance)
+            : base(accountHolder, initialBalance) { }
+
+        // Implementation of deposit
+        public override void Deposit(decimal amount)
+        {
+            if (amount > 0)
+            {
+                Balance += amount;
+                Console.WriteLine($"Deposited {amount:C} to {AccountHolder}'s current account.");
+            }
+            else
+            {
+                Console.WriteLine("Deposit amount must be positive.");
+            }
+        }
+
+        // Implementation of withdraw without a limit
+        public override void Withdraw(decimal amount)
+        {
+            if (amount > Balance)
+            {
+                Console.WriteLine("Insufficient funds.");
+            }
+            else
+            {
+                Balance -= amount;
+                Console.WriteLine($"Withdrew {amount:C} from {AccountHolder}'s current account.");
             }
         }
     }
