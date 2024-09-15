@@ -17,7 +17,7 @@ namespace ConsoleApp
             balance = 250000;
         }
 
-        public void createAccount()
+        public void getAccDetails()
         {
             Console.WriteLine("Enter bank Bank name");
             string? userInput1 = Console.ReadLine();
@@ -35,16 +35,18 @@ namespace ConsoleApp
             if(accNumber != null && bankAccName != null)
             {
                 Console.WriteLine($"Your bank account name is: {bankAccName} and bank account no is {accNumber}");
+                Console.WriteLine("--------------------------------------------");
             }
         }
 
         public void deposit()
         {
             Console.WriteLine("Enter Enter account details where you want to deposit");
-            checkAccount();
+            getAccDetails();
             Console.WriteLine("Enter amount you want to deposit");
             string? userInput3 = Console.ReadLine();
             balance = Convert.ToInt32(userInput3);
+            Console.WriteLine("--------------------------------------------");
         }
 
         public void withdraw()
